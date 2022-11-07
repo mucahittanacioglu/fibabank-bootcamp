@@ -18,7 +18,7 @@ public class Cart {
     private String customerName;
     private double totalAmount;
     private int status;
-    @OneToMany(mappedBy="cart",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="cart",cascade = CascadeType.ALL,fetch=FetchType.EAGER)
     private List<CartProduct> cartProducts;
 
     public Cart(String customerName) {

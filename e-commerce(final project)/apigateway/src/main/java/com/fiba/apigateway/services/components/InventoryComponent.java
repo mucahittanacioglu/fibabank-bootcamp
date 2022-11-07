@@ -3,6 +3,7 @@ package com.fiba.apigateway.services.components;
 import com.fiba.apigateway.dtos.CategoryDto;
 import com.fiba.apigateway.dtos.ProductDto;
 import com.fiba.apigateway.utilities.results.DataResult;
+import com.fiba.apigateway.utilities.results.Result;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -37,5 +38,6 @@ public class InventoryComponent {
                 new ParameterizedTypeReference<DataResult<List<ProductDto>>>(){}).getBody();
         return result;
     }
+
 
 }

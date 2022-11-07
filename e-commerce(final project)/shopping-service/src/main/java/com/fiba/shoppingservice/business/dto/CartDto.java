@@ -1,6 +1,5 @@
 package com.fiba.shoppingservice.business.dto;
 
-import com.fiba.shoppingservice.data.entities.CartProduct;
 import lombok.*;
 
 

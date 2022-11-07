@@ -1,5 +1,4 @@
-package com.fiba.shoppingservice.business.dto;
-
+package com.fiba.apigateway.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

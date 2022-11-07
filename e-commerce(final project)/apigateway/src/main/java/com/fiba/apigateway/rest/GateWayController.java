@@ -1,5 +1,6 @@
 package com.fiba.apigateway.rest;
 
+import com.fiba.apigateway.dtos.CartProductDto;
 import com.fiba.apigateway.dtos.CategoryDto;
 import com.fiba.apigateway.services.Gateway;
 import com.fiba.apigateway.utilities.results.DataResult;
@@ -26,30 +27,29 @@ public class GateWayController {
         return _gateway.getProductByCategory(categoryId);
     }
     @GetMapping("/inventory/categories")
-    public DataResult<List<CategoryDto>> getAllCategories(){
+    public Result getAllCategories(){
 
         return _gateway.getAlCategories();
     }
 
     @GetMapping("/shopping/cart/create")
     public Result createCart(){
-        return null;
+        return _gateway.createCart();
     }
     @PostMapping("/shopping/cart/add")
-    public Result addProductToCart(@RequestBody Object cartProductDto){
-        return null;
+    public Result addProductToCart(@RequestBody CartProductDto cartProductDto){
+        return _gateway.addProductToCart(cartProductDto);
     }
-    @DeleteMapping("/cart/{cartId}/remove/{productId}")
+    @DeleteMapping("/shopping/cart/{cartId}/remove/{productId}")
     public Result deleteItemFromCart(@PathVariable("cartId")long cartId,@PathVariable("productId")long productId){
-        return null;
+        return _gateway.deleteItemFromCart(cartId,productId);
     }
-    @GetMapping("/cart/checkout/{cartId}")
+    @GetMapping("/shopping/cart/checkout/{cartId}")
     public Result checkout(@PathVariable("cartId")long cartId){
-        return null;
+        return _gateway.checkout(cartId);
     }
-    @GetMapping("/cart/find/{cartId}")
+    @GetMapping("/shopping/cart/find/{cartId}")
     public Result find(@PathVariable("cartId")long cartId){
-
-        return null;
+        return _gateway.find(cartId);
     }
 }
