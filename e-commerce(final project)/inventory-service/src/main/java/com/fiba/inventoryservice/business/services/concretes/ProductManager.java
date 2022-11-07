@@ -1,5 +1,6 @@
 package com.fiba.inventoryservice.business.services.concretes;
 
+import com.fiba.inventoryservice.business.Mapper;
 import com.fiba.inventoryservice.business.dto.ProductDto;
 import com.fiba.inventoryservice.business.services.abstracts.ProductService;
 import com.fiba.inventoryservice.data.entities.Product;
@@ -23,7 +24,7 @@ public class ProductManager implements ProductService {
     public DataResult<ProductDto> getProductWithId(long productId){
         Optional<Product> result = _productRepository.findById(productId);
         if(result.isPresent()){
-            return new SuccessDataResult<>(toDto(result.get()),Messages.PRODUCT_FOUND);
+            return new SuccessDataResult<>(Mapper.productEntityToDto(result.get()),Messages.PRODUCT_FOUND);
         }
         return new ErrorDataResult<>(Messages.PRODUCT_NOT_FOUND);
     }
@@ -33,13 +34,11 @@ public class ProductManager implements ProductService {
         List<ProductDto> resultDto = new ArrayList<>();
 
         if(!result.isEmpty()){
-            result.forEach(product -> resultDto.add(toDto(product)));
+            result.forEach(product -> resultDto.add(Mapper.productEntityToDto(product)));
             return new SuccessDataResult<>(resultDto,Messages.PRODUCT_FOUND);
         }
         return new ErrorDataResult<>(Messages.PRODUCT_NOT_FOUND);
     }
 
-    public ProductDto toDto(Product product){
-        return new ProductDto(product.getProductName(),product.getSalesPrice(),product.getCategory().getCategoryName());
-    }
+
 }

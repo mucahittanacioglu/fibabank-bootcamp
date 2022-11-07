@@ -7,11 +7,13 @@ import com.fiba.shoppingservice.data.entities.Cart;
 import com.fiba.shoppingservice.data.entities.CartProduct;
 import com.fiba.shoppingservice.data.repositories.CartRepository;
 import com.fiba.shoppingservice.utilities.Messages.Messages;
-import com.fiba.shoppingservice.utilities.results.DataResult;
+import com.fiba.shoppingservice.utilities.results.ErrorResult;
 import com.fiba.shoppingservice.utilities.results.Result;
 import com.fiba.shoppingservice.utilities.results.SuccessDataResult;
+import com.fiba.shoppingservice.utilities.results.SuccessResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Optional;
 
@@ -19,32 +21,66 @@ import java.util.Optional;
 public class CartManager implements CartService {
 
     @Autowired
-    CartRepository _cart_repository;
+    CartRepository _cartRepository;
 
     public Result createNewCart(){
 
-        Cart cart= _cart_repository.save(new Cart("John Dao"));
+        Cart cart= _cartRepository.save(new Cart("John Dao"));
 
         return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
     }
+
     public Result addItemToCart(CartProductDto cartProductDto){
         CartProduct cartProduct = Mapper.cartProductDtoToEntity(cartProductDto);
-        Optional<Cart> cartOptional = _cart_repository.findById(cartProductDto.getCartId());
+        Optional<Cart> cartOptional = _cartRepository.findById(cartProductDto.getCartId());
         if (cartOptional.isPresent()){
             Cart cart = cartOptional.get();
+            cart.addCartProduct(cartProduct);
+            _cartRepository.save(cart);
 
+            return new SuccessResult(Messages.CART_PRODUCT_ADD_SUCCESS);
         }
-        return null;
+        return new ErrorResult(Messages.CART_PRODUCT_ADD_FAILURE);
     }
-    public Result removeItemFromCart(){
 
-        return null;
+    public Result removeItemFromCart(long cartId,long productId){
+        Optional<Cart> cartOptional = _cartRepository.findById(cartId);
+        if (cartOptional.isPresent()){
+          Cart cart = cartOptional.get();
+          Optional<CartProduct> productOptional = cart.getCartProducts().stream()
+                  .filter(prodcut -> prodcut.getCartProductId() == productId).findFirst();
+          if (productOptional.isPresent()){
+              CartProduct cartProduct = productOptional.get();
+              cart.removeCartProduct(cartProduct);
+              Cart result = _cartRepository.save(cart);
+
+
+              return new SuccessDataResult<>(result,Messages.CART_PRODUCT_DELETION_SUCCESS);
+          }else{
+              return new ErrorResult(Messages.CART_PRODUCT_NOT_EXIST);
+          }
+        }
+        return new ErrorResult(Messages.CART_NOT_FOUND);
     }
     public Result cartCheckout(long cartId){
-        return null;
+        Optional<Cart> cartOptional = _cartRepository.findById(cartId);
+        if (cartOptional.isPresent()){
+            Cart cart = cartOptional.get();
+            if (cart.getStatus() == 1){
+                return  new ErrorResult(Messages.CART_ALREADY_CHECKED);
+            }
+            cart.setStatus(1);
+            _cartRepository.save(cart);
+            return new SuccessResult(Messages.CART_CHECKOUT_SUCCESS);
+        }
+        return new ErrorResult(Messages.CART_CHECKOUT_FAILURE);
     }
     public Result getCartById(long cartId){
-        return null;
+        Optional<Cart> cartOptional = _cartRepository.findById(cartId);
+        if (cartOptional.isPresent()){
+            return new SuccessDataResult<>(Mapper.cartEntityToDto(cartOptional.get()),Messages.CART_FOUND);
+        }
+        return new ErrorResult(Messages.CART_NOT_FOUND);
     }
 
 

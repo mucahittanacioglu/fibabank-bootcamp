@@ -1,5 +1,6 @@
 package com.fiba.inventoryservice.business.services.concretes;
 
+import com.fiba.inventoryservice.business.Mapper;
 import com.fiba.inventoryservice.business.dto.CategoryDto;
 import com.fiba.inventoryservice.business.services.abstracts.CategoryService;
 import com.fiba.inventoryservice.data.entities.Category;
@@ -23,7 +24,7 @@ public class CategoryManager implements CategoryService {
         _categoryRepository.findAll()
                 .forEach(category ->
                         categoriesDto
-                                .add(toDto(category)));
+                                .add(Mapper.categoryEntityToDto(category)));
 
         return new SuccessDataResult<>(categoriesDto);
     }
@@ -31,11 +32,5 @@ public class CategoryManager implements CategoryService {
         _categoryRepository.save(ct);
     }
 
-    /* Mapper functions */
-    private CategoryDto toDto(Category category){
-        return new CategoryDto(category.getCategoryName());
-    }
-    private Category toEntity(CategoryDto categoryDto){
-        return new Category(categoryDto.getCategoryName());
-    }
+
 }

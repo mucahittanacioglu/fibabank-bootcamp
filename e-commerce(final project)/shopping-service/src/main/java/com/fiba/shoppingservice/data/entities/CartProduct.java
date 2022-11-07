@@ -15,7 +15,7 @@ public class CartProduct {
     private int salesQuantity;
     private double salesPrice;
     private double lineAmount;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name="cart_id")
     private Cart cart;
 

@@ -1,5 +1,8 @@
 package com.fiba.apigateway.utilities.results;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class DataResult<T> extends Result {
 
     private T data;

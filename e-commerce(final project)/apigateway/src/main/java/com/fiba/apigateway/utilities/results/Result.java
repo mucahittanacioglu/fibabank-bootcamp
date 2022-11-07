@@ -1,5 +1,8 @@
 package com.fiba.apigateway.utilities.results;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class Result {
     private boolean success;
     private String message;
