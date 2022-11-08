@@ -1,14 +1,14 @@
 package com.fiba.inventoryservice.presentation.rest;
 
-import com.fiba.inventoryservice.business.dto.CategoryDto;
+import com.fiba.inventoryservice.business.dto.CategoryInsertionDto;
+import com.fiba.inventoryservice.business.dto.CategoryViewDto;
 import com.fiba.inventoryservice.business.services.concretes.CategoryManager;
 import com.fiba.inventoryservice.data.entities.Category;
 import com.fiba.inventoryservice.data.entities.Product;
 import com.fiba.inventoryservice.utilities.results.DataResult;
+import com.fiba.inventoryservice.utilities.results.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,18 @@ public class CategoryController {
     private CategoryManager _categoryManager;
 
     @GetMapping("/categories")
-    public DataResult<List<CategoryDto>> getAllCategories(){
+    public DataResult<List<CategoryViewDto>> getAllCategories(){
         return _categoryManager.getAllCategories();
     }
 
+    @PostMapping("/category/add")
+    public Result createCategory(@RequestBody CategoryInsertionDto categoryInsertionDto){
+        return _categoryManager.addCategory(categoryInsertionDto);
+    }
+    @DeleteMapping("/category/delete/{categoryId}")
+    public Result deleteCategoryById(@PathVariable("categoryId") long categoryId){
+        return _categoryManager.removeCategory(categoryId);
+    }
     @GetMapping("/categories/insert")
     public String insertCategories(){
         Category ct = new Category("Shirts");
@@ -37,7 +45,7 @@ public class CategoryController {
         p2.setCategory(ct);
         ct.getProductList().add(p2);
 
-        _categoryManager.addCategory(ct);
+        _categoryManager.addCategoryAsEntity(ct);
         return "Success!";
     }
 }

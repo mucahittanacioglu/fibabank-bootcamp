@@ -25,5 +25,10 @@ public class Product {
         this.productName = productName;
         this.salesPrice = salesPrice;
     }
+    public Product(long productId,String productName, double salesPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.salesPrice = salesPrice;
+    }
 
 }
