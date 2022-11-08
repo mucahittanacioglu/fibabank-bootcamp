@@ -30,6 +30,12 @@ public class CartManager implements CartService {
 
         return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
     }
+    public Result createNewCart(String customerName){
+
+        Cart cart= _cartRepository.save(new Cart(customerName));
+
+        return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
+    }
 
     public Result addItemToCart(CartProductInsertionDto cartProductInsertionDto){
 
@@ -38,8 +44,20 @@ public class CartManager implements CartService {
         if (cartOptional.isPresent()){
             Cart cart = cartOptional.get();
             if (cart.getStatus()==1) return new ErrorResult(Messages.CART_CHECKED_OUT);
-            //cart.addCartProduct(cartProduct);
-            cart.getCartProducts().add(cartProduct);
+            //If product exist increment quantity
+            Optional<CartProduct> tempProductOptional= cart.getCartProducts().stream().filter(cartProductS->
+                    cartProductS.getProductId()==cartProduct.getProductId()).findFirst();
+            if (tempProductOptional.isPresent()){
+                CartProduct tempProduct = tempProductOptional.get();
+                cart.getCartProducts().remove(tempProduct);
+                tempProduct.setSalesQuantity(tempProduct.getSalesQuantity()+cartProduct.getSalesQuantity());
+                tempProduct.updateLineAmount();
+                cart.getCartProducts().add(tempProduct);
+
+            }else{
+                cartProduct.updateLineAmount();
+                cart.getCartProducts().add(cartProduct);
+            }
             cart.updateTotalAmount();
             _cartRepository.save(cart);
 
@@ -56,11 +74,18 @@ public class CartManager implements CartService {
                   .filter(product -> product.getCartProductId() == productId).findFirst();
           if (productOptional.isPresent()){
               CartProduct cartProduct = productOptional.get();
-              //cart.removeCartProduct(cartProduct);
-              cart.getCartProducts().remove(cartProduct);
-              cart.updateTotalAmount();
-              Cart result = _cartRepository.save(cart);
+              //remove completely if no quantity
+              if (cartProduct.getSalesQuantity()==1){
+                  cart.getCartProducts().remove(cartProduct);
+                  cart.updateTotalAmount();
+              }else{
+                  cart.getCartProducts().remove(cartProduct);
+                  cartProduct.setSalesQuantity(cartProduct.getSalesQuantity()-1);
+                  cartProduct.updateLineAmount();
+                  cart.getCartProducts().add(cartProduct);
+              }
 
+              Cart result = _cartRepository.save(cart);
 
               return new SuccessDataResult<>(result,Messages.CART_PRODUCT_DELETION_SUCCESS);
           }else{

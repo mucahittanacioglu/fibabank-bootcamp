@@ -21,7 +21,10 @@ public class CartController {
 
         return _cartManager.createNewCart();
     }
-
+    @GetMapping("/cart/create/{customerName}")
+    public Result createCart(@PathVariable("customerName")String customerName){
+        return _cartManager.createNewCart(customerName);
+    }
     @PostMapping("/cart/add")
     public Result addProductToCart(@RequestBody CartProductInsertionDto cartProductInsertionDto){
         return _cartManager.addItemToCart(cartProductInsertionDto);

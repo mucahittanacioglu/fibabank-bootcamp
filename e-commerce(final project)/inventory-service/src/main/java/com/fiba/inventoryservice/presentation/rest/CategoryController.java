@@ -2,6 +2,7 @@ package com.fiba.inventoryservice.presentation.rest;
 
 import com.fiba.inventoryservice.business.dto.CategoryInsertionDto;
 import com.fiba.inventoryservice.business.dto.CategoryViewDto;
+import com.fiba.inventoryservice.business.dto.CategoryViewWithProductDto;
 import com.fiba.inventoryservice.business.services.concretes.CategoryManager;
 import com.fiba.inventoryservice.data.entities.Category;
 import com.fiba.inventoryservice.data.entities.Product;
@@ -22,6 +23,10 @@ public class CategoryController {
     @GetMapping("/categories")
     public DataResult<List<CategoryViewDto>> getAllCategories(){
         return _categoryManager.getAllCategories();
+    }
+    @GetMapping("/category/{categoryId}")
+    public DataResult<?> getCategoryWithData(@PathVariable("categoryId")long categoryId){
+        return _categoryManager.getCategoryWithData(categoryId);
     }
 
     @PostMapping("/category/add")

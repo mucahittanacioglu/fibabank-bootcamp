@@ -22,6 +22,9 @@ public class CartProduct {
         this.salesPrice = salesPrice;
         this.lineAmount = lineAmount;
     }
+    public void updateLineAmount(){
+        setLineAmount(getSalesPrice()*getSalesQuantity());
+    }
 
 
 }

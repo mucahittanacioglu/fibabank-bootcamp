@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryViewWithProductDto {
+    private Long categoryId;
     private String categoryName;
     private List<ProductViewDto> products;
 }

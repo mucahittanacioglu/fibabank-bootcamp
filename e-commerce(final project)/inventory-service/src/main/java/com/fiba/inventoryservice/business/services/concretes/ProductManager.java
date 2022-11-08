@@ -48,6 +48,7 @@ public class ProductManager implements ProductService {
             Category category = categoryOptional.get();
             Product product = Mapper.productInsertionDtoToEntity(productInsertionDto);
             product.setCategory(category);
+
             category.getProductList().add(product);
             _categoryManager.addCategoryAsEntity(category);
             return new SuccessResult(Messages.PRODUCT_ADD_SUCCESS);

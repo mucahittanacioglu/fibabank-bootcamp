@@ -1,13 +1,13 @@
 package com.fiba.apigateway.rest;
 
-import com.fiba.apigateway.dtos.CartProductDto;
-import com.fiba.apigateway.dtos.CategoryInsertionDto;
-import com.fiba.apigateway.dtos.ProductInsertionDto;
+import com.fiba.apigateway.dtos.*;
 import com.fiba.apigateway.services.Gateway;
 import com.fiba.apigateway.utilities.results.DataResult;
 import com.fiba.apigateway.utilities.results.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -44,20 +44,27 @@ public class GateWayController {
     public Result addProduct(@RequestBody ProductInsertionDto productInsertionDto){
         return _gateway.addProduct(productInsertionDto);
     }
-
+    @GetMapping("/inventory/category/{categoryId}")
+    public String getCategoryWithData(@PathVariable("categoryId")long categoryId){
+        return _gateway.getCategoryWithData(categoryId);
+    }
     @DeleteMapping("/inventory/product/delete/{productId}")
     public Result deleteProductWithId(@PathVariable("productId") long productId){
         return _gateway.deleteProductWithId(productId);
     }
 
     @GetMapping("/shopping/cart/create")
-    public Result createCart(){
+    public String createCart(){
         return _gateway.createCart();
+    }
+    @GetMapping("/shopping/cart/create/{customerName}")
+    public String createCart(@PathVariable("customerName") String customerName){
+        return _gateway.createCart(customerName);
     }
 
     @PostMapping("/shopping/cart/add")
-    public Result addProductToCart(@RequestBody CartProductDto cartProductDto){
-        return _gateway.addProductToCart(cartProductDto);
+    public Result addProductToCart(@RequestBody CartProductInsertDto cartProductInsertDto){
+        return _gateway.addProductToCart(cartProductInsertDto);
     }
 
     @DeleteMapping("/shopping/cart/{cartId}/remove/{productId}")
@@ -71,8 +78,10 @@ public class GateWayController {
     }
 
     @GetMapping("/shopping/cart/find/{cartId}")
-    public String find(@PathVariable("cartId")long cartId){
-        return _gateway.find(cartId);
+    public Result find(@PathVariable("cartId")long cartId){
+
+        return _gateway.findCartById(cartId);
     }
+
 
 }

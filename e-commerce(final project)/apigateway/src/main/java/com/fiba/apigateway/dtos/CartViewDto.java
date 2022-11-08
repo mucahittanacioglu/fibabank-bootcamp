@@ -1,19 +1,19 @@
 package com.fiba.apigateway.dtos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartProductDto {
-    private long cartProductId;
+public class CartViewDto {
     private long cartId;
-    private long productId;
-    private int salesQuantity;
-    private double salesPrice;
-    private double lineAmount;
+    private String customerName;
+    private List<CartProductViewDto> cartProducts;
 }

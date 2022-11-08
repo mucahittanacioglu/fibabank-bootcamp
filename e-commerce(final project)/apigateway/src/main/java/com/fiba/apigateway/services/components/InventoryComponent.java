@@ -20,6 +20,7 @@ import java.util.List;
 public class InventoryComponent {
     private final String inventoryServiceUrl = "http://localhost:8081/inventory";
     private final String getCategoriesRoute = "/categories";
+    private final String getCategoryWithItemRoute = "/category/";
     private final String addProductRoute = "/product/add";
     private final String deleteProductRoute = "/product/delete/";
     private final String getProductRoute = "/product/";
@@ -73,6 +74,13 @@ public class InventoryComponent {
         RestTemplate restTemplate = new RestTemplate();
         Result result = restTemplate.exchange(inventoryServiceUrl+ deleteProductRoute +productId, HttpMethod.DELETE
                 ,null,Result.class).getBody();
+        return result;
+    }
+
+    public String getCategoryWithData(long categoryId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.exchange(inventoryServiceUrl+ getCategoryWithItemRoute+categoryId, HttpMethod.GET
+                ,null,String.class).getBody();
         return result;
     }
 }

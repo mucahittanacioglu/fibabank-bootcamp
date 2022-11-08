@@ -3,14 +3,12 @@ package com.fiba.inventoryservice.business.services.concretes;
 import com.fiba.inventoryservice.business.Mapper;
 import com.fiba.inventoryservice.business.dto.CategoryInsertionDto;
 import com.fiba.inventoryservice.business.dto.CategoryViewDto;
+import com.fiba.inventoryservice.business.dto.CategoryViewWithProductDto;
 import com.fiba.inventoryservice.business.services.abstracts.CategoryService;
 import com.fiba.inventoryservice.data.entities.Category;
 import com.fiba.inventoryservice.data.repositories.CategoryRepository;
 import com.fiba.inventoryservice.utilities.Messages.Messages;
-import com.fiba.inventoryservice.utilities.results.DataResult;
-import com.fiba.inventoryservice.utilities.results.Result;
-import com.fiba.inventoryservice.utilities.results.SuccessDataResult;
-import com.fiba.inventoryservice.utilities.results.SuccessResult;
+import com.fiba.inventoryservice.utilities.results.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,4 +47,13 @@ public class CategoryManager implements CategoryService {
         return _categoryRepository.findById(categoryID);
     }
 
+
+    @Override
+    public DataResult<?> getCategoryWithData(long categoryId) {
+        Optional<Category> categoryOptional = findCategoryById(categoryId);
+        if (categoryOptional.isPresent()){
+            return  new SuccessDataResult<>(Mapper.categoryEntityToViewWithProductDto(categoryOptional.get()),Messages.CATEGORY_FOUND);
+        }
+        return new ErrorDataResult(null,Messages.CATEGORY_NOT_FOUND);
+    }
 }

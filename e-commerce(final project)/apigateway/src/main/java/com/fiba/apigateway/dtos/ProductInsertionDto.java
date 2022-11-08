@@ -12,5 +12,4 @@ public class ProductInsertionDto {
     private long categoryId;
     private String productName;
     private double salesPrice;
-    private String categoryName;
 }

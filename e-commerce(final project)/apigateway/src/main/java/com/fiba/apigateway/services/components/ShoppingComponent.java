@@ -1,20 +1,16 @@
 package com.fiba.apigateway.services.components;
 
-import com.fiba.apigateway.dtos.CartDto;
-import com.fiba.apigateway.dtos.CartProductDto;
-import com.fiba.apigateway.dtos.ProductDto;
+import com.fiba.apigateway.dtos.CartInsertDto;
+import com.fiba.apigateway.dtos.CartProductInsertDto;
+import com.fiba.apigateway.dtos.CartProductViewDto;
 import com.fiba.apigateway.utilities.results.DataResult;
 import com.fiba.apigateway.utilities.results.Result;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Component
 public class ShoppingComponent {
@@ -25,15 +21,20 @@ public class ShoppingComponent {
     private String cartFindByIdRoute = "/cart/find/";
 
 
-    public Result createCart(){
+    public String createCart(){
         RestTemplate restTemplate = new RestTemplate();
-        Result result = restTemplate.getForObject(shoppingServiceUrl+cartCreateRoute,Result.class);
-        return result;
+
+        return restTemplate.getForObject(shoppingServiceUrl+cartCreateRoute,String.class);
+    }
+    public String createCart(String customerName){
+        RestTemplate restTemplate = new RestTemplate();
+
+        return restTemplate.getForObject(shoppingServiceUrl+cartCreateRoute+"/"+customerName,String.class);
     }
 
-    public Result addProductToCart(CartProductDto cartProductDto){
+    public Result addProductToCart(CartProductInsertDto cartProductInsertDto){
         RestTemplate restTemplate = new RestTemplate();
-        Result result = restTemplate.exchange(shoppingServiceUrl+cartItemAddRoute, HttpMethod.POST,new HttpEntity<>(cartProductDto),
+        Result result = restTemplate.exchange(shoppingServiceUrl+cartItemAddRoute, HttpMethod.POST,new HttpEntity<>(cartProductInsertDto),
                Result.class).getBody();
         return result;
     }
@@ -50,12 +51,13 @@ public class ShoppingComponent {
                 null,Result.class).getBody();
         return result;
     }
-    public String find(long cartId){
+    public Result findCartById(long cartId){
         RestTemplate restTemplate = new RestTemplate();
-        /*Result result = restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
-                null,new ParameterizedTypeReference<DataResult<CartDto>>(){}).getBody();*/
-        return restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
-                null,String.class).getBody();
+        DataResult<CartInsertDto> result = restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
+                null,new ParameterizedTypeReference<DataResult<CartInsertDto>>(){}).getBody();
+        /*return restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
+                null,String.class).getBody();*/
+        return result;
     }
 
 }
