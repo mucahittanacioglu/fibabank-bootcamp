@@ -1,0 +1,29 @@
+<ng-container *ngIf="isSingleview" >
+<div *ngFor="let c of categoriesWithData" 
+class="container d-flex justify-content-center">
+
+    <ul class="list-group mt-5 text-white">
+      <li class="list-group-item d-flex justify-content-between align-content-center">
+
+          <div class="d-flex flex-row">
+              <div class="ml-2">
+                  <h6 class="mb-0">{{c.categoryName}}</h6>
+                  <div class="about">
+                      <span>{{c.products.length}} Product</span>
+                  </div>
+              </div>
+          </div>
+          <div class="check">
+              <button (click)="categoryView(c)">View</button>
+          </div>
+      </li>
+    </ul>
+    </div>
+</ng-container>
+<ng-container *ngIf="!isSingleview" >
+    <div>
+        <button type="button" class="btn btn-danger" (click)="categoryViewReset()">Go Back</button>
+    </div>
+    
+    <app-category-view [currentCategoryWithData] = "currentCategoryWithData"></app-category-view>
+</ng-container>    
