@@ -1,6 +1,7 @@
 package com.fiba.shoppingservice.presentation.rest;
 
-import com.fiba.shoppingservice.business.dto.CartProductDto;
+import com.fiba.shoppingservice.business.dto.CartProductInsertionDto;
+import com.fiba.shoppingservice.business.dto.CartProductViewDto;
 import com.fiba.shoppingservice.business.services.concretes.CartManager;
 import com.fiba.shoppingservice.business.services.concretes.CartProductManager;
 import com.fiba.shoppingservice.utilities.results.Result;
@@ -22,15 +23,15 @@ public class CartController {
     }
 
     @PostMapping("/cart/add")
-    public Result addProductToCart(@RequestBody CartProductDto cartProductDto){
-        return _cartManager.addItemToCart(cartProductDto);
+    public Result addProductToCart(@RequestBody CartProductInsertionDto cartProductInsertionDto){
+        return _cartManager.addItemToCart(cartProductInsertionDto);
     }
     @DeleteMapping("/cart/{cartId}/remove/{productId}")
     public Result deleteItemFromCart(@PathVariable("cartId")long cartId,@PathVariable("productId")long productId){
         Result result = _cartManager.removeItemFromCart(cartId,productId);
-        if (result.isSuccess()){
+        /*if (result.isSuccess()){
             _cartProductManager.removeProductById(productId);
-        }
+        }*/
         return result;
     }
     @GetMapping("/cart/checkout/{cartId}")

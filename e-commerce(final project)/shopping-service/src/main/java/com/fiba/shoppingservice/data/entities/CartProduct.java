@@ -15,9 +15,6 @@ public class CartProduct {
     private int salesQuantity;
     private double salesPrice;
     private double lineAmount;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="cart_id")
-    private Cart cart;
 
     public CartProduct( long productId, int salesQuantity, double salesPrice, double lineAmount) {
         this.productId = productId;

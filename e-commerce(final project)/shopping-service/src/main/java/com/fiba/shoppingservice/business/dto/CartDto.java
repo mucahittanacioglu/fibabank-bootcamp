@@ -8,5 +8,5 @@ import java.util.List;
 public class CartDto {
     private long cartId;
     private String customerName;
-    private List<CartProductDto> cartProducts;
+    private List<CartProductViewDto> cartProducts;
 }

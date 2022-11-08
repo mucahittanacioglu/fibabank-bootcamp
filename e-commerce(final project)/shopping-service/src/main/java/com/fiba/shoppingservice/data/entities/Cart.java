@@ -18,13 +18,14 @@ public class Cart {
     private String customerName;
     private double totalAmount;
     private int status;
-    @OneToMany(mappedBy="cart",cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "cart_id")
     private List<CartProduct> cartProducts;
 
     public Cart(String customerName) {
         this.customerName = customerName;
     }
-
+/*
     public void addCartProduct(CartProduct cartProduct) {
         cartProducts.add(cartProduct);
         cartProduct.setCart(this);
@@ -36,9 +37,12 @@ public class Cart {
         cartProduct.setCart(null);
         updateTotalAmount();
     }
-    private void updateTotalAmount(){
+*/
+    public void updateTotalAmount(){
         double total = cartProducts.stream()
                 .mapToDouble(product->product.getLineAmount()).sum();
         setTotalAmount(total);
     }
+
+
 }

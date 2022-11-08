@@ -1,7 +1,8 @@
 package com.fiba.shoppingservice.business.services.concretes;
 
 import com.fiba.shoppingservice.business.Mapper;
-import com.fiba.shoppingservice.business.dto.CartProductDto;
+import com.fiba.shoppingservice.business.dto.CartProductInsertionDto;
+import com.fiba.shoppingservice.business.dto.CartProductViewDto;
 import com.fiba.shoppingservice.business.services.abstarcts.CartService;
 import com.fiba.shoppingservice.data.entities.Cart;
 import com.fiba.shoppingservice.data.entities.CartProduct;
@@ -30,17 +31,21 @@ public class CartManager implements CartService {
         return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
     }
 
-    public Result addItemToCart(CartProductDto cartProductDto){
-        CartProduct cartProduct = Mapper.cartProductDtoToEntity(cartProductDto);
-        Optional<Cart> cartOptional = _cartRepository.findById(cartProductDto.getCartId());
+    public Result addItemToCart(CartProductInsertionDto cartProductInsertionDto){
+
+        CartProduct cartProduct = Mapper.cartProductInsertionDtoToEntity(cartProductInsertionDto);
+        Optional<Cart> cartOptional = _cartRepository.findById(cartProductInsertionDto.getCartId());
         if (cartOptional.isPresent()){
             Cart cart = cartOptional.get();
-            cart.addCartProduct(cartProduct);
+            if (cart.getStatus()==1) return new ErrorResult(Messages.CART_CHECKED_OUT);
+            //cart.addCartProduct(cartProduct);
+            cart.getCartProducts().add(cartProduct);
+            cart.updateTotalAmount();
             _cartRepository.save(cart);
 
             return new SuccessResult(Messages.CART_PRODUCT_ADD_SUCCESS);
         }
-        return new ErrorResult(Messages.CART_PRODUCT_ADD_FAILURE);
+        return new ErrorResult(Messages.CART_NOT_FOUND);
     }
 
     public Result removeItemFromCart(long cartId,long productId){
@@ -48,10 +53,12 @@ public class CartManager implements CartService {
         if (cartOptional.isPresent()){
           Cart cart = cartOptional.get();
           Optional<CartProduct> productOptional = cart.getCartProducts().stream()
-                  .filter(prodcut -> prodcut.getCartProductId() == productId).findFirst();
+                  .filter(product -> product.getCartProductId() == productId).findFirst();
           if (productOptional.isPresent()){
               CartProduct cartProduct = productOptional.get();
-              cart.removeCartProduct(cartProduct);
+              //cart.removeCartProduct(cartProduct);
+              cart.getCartProducts().remove(cartProduct);
+              cart.updateTotalAmount();
               Cart result = _cartRepository.save(cart);
 
 

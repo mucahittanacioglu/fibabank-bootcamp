@@ -10,9 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartProductDto {
+public class CartProductViewDto {
     private long cartProductId;
-    private long cartId;
     private long productId;
     private int salesQuantity;
     private double salesPrice;
