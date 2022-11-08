@@ -1,15 +1,16 @@
 package com.fiba.apigateway.rest;
 
 import com.fiba.apigateway.dtos.CartProductDto;
-import com.fiba.apigateway.dtos.CategoryDto;
+import com.fiba.apigateway.dtos.CategoryInsertionDto;
+import com.fiba.apigateway.dtos.ProductInsertionDto;
 import com.fiba.apigateway.services.Gateway;
 import com.fiba.apigateway.utilities.results.DataResult;
 import com.fiba.apigateway.utilities.results.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/commerce")
 public class GateWayController {
@@ -22,7 +23,7 @@ public class GateWayController {
         return _gateway.getProductById(productId);
     }
     @GetMapping("/inventory/products/{categoryId}")
-    public DataResult<?> getProductsByCategoryId(@PathVariable("categoryId") long categoryId){
+    public String getProductsByCategoryId(@PathVariable("categoryId") long categoryId){
 
         return _gateway.getProductByCategory(categoryId);
     }
@@ -31,25 +32,47 @@ public class GateWayController {
 
         return _gateway.getAlCategories();
     }
+    @PostMapping("/inventory/category/add")
+    public Result createCategory(@RequestBody CategoryInsertionDto categoryInsertionDto){
+        return _gateway.addCategory(categoryInsertionDto);
+    }
+    @DeleteMapping("/inventory/category/delete/{categoryId}")
+    public Result deleteCategoryById(@PathVariable("categoryId") long categoryId){
+        return _gateway.removeCategory(categoryId);
+    }
+    @PostMapping("/inventory/product/add")
+    public Result addProduct(@RequestBody ProductInsertionDto productInsertionDto){
+        return _gateway.addProduct(productInsertionDto);
+    }
+
+    @DeleteMapping("/inventory/product/delete/{productId}")
+    public Result deleteProductWithId(@PathVariable("productId") long productId){
+        return _gateway.deleteProductWithId(productId);
+    }
 
     @GetMapping("/shopping/cart/create")
     public Result createCart(){
         return _gateway.createCart();
     }
+
     @PostMapping("/shopping/cart/add")
     public Result addProductToCart(@RequestBody CartProductDto cartProductDto){
         return _gateway.addProductToCart(cartProductDto);
     }
+
     @DeleteMapping("/shopping/cart/{cartId}/remove/{productId}")
     public Result deleteItemFromCart(@PathVariable("cartId")long cartId,@PathVariable("productId")long productId){
         return _gateway.deleteItemFromCart(cartId,productId);
     }
+
     @GetMapping("/shopping/cart/checkout/{cartId}")
     public Result checkout(@PathVariable("cartId")long cartId){
         return _gateway.checkout(cartId);
     }
+
     @GetMapping("/shopping/cart/find/{cartId}")
-    public Result find(@PathVariable("cartId")long cartId){
+    public String find(@PathVariable("cartId")long cartId){
         return _gateway.find(cartId);
     }
+
 }

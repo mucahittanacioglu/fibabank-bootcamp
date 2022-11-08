@@ -50,11 +50,12 @@ public class ShoppingComponent {
                 null,Result.class).getBody();
         return result;
     }
-    public Result find(long cartId){
+    public String find(long cartId){
         RestTemplate restTemplate = new RestTemplate();
-        Result result = restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
-                null,new ParameterizedTypeReference<DataResult<CartDto>>(){}).getBody();
-        return result;
+        /*Result result = restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
+                null,new ParameterizedTypeReference<DataResult<CartDto>>(){}).getBody();*/
+        return restTemplate.exchange(shoppingServiceUrl+cartFindByIdRoute+cartId,HttpMethod.GET,
+                null,String.class).getBody();
     }
 
 }

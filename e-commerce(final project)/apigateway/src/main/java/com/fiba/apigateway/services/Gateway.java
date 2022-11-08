@@ -1,8 +1,6 @@
 package com.fiba.apigateway.services;
 
-import com.fiba.apigateway.dtos.CartProductDto;
-import com.fiba.apigateway.dtos.CategoryDto;
-import com.fiba.apigateway.dtos.ProductDto;
+import com.fiba.apigateway.dtos.*;
 import com.fiba.apigateway.services.components.InventoryComponent;
 import com.fiba.apigateway.services.components.ShoppingComponent;
 import com.fiba.apigateway.utilities.results.DataResult;
@@ -28,7 +26,7 @@ public class Gateway {
     public DataResult<ProductDto> getProductById(long productId){
         return _inventoryComponent.getProductWithId(productId);
     }
-    public DataResult<List<ProductDto>> getProductByCategory(long categoryId){
+    public String getProductByCategory(long categoryId){
         return _inventoryComponent.getProductsByCategoryId(categoryId);
     }
     public Result createCart(){
@@ -45,8 +43,23 @@ public class Gateway {
     public Result checkout(long cartId){
         return _shoppingComponent.checkout(cartId);
     }
-    public Result find(long cartId){
+
+    public String find(long cartId){
         return _shoppingComponent.find(cartId);
     }
 
+    public Result addCategory(CategoryInsertionDto categoryInsertionDto) {
+        return _inventoryComponent.addCategory(categoryInsertionDto);
+    }
+    public Result removeCategory(long categoryId) {
+        return _inventoryComponent.removeCategory(categoryId);
+    }
+
+    public Result addProduct(ProductInsertionDto productInsertionDto) {
+        return _inventoryComponent.addProduct(productInsertionDto);
+    }
+
+    public Result deleteProductWithId(long productId) {
+        return _inventoryComponent.deleteProductWithId(productId);
+    }
 }
