@@ -34,6 +34,7 @@ public class CategoryManager implements CategoryService {
     public void addCategoryAsEntity(Category category){
         _categoryRepository.save(category);
     }
+
     public Result addCategory(CategoryInsertionDto categoryInsertionDto){
         _categoryRepository.save(Mapper.categoryInsertionDtoToEntity(categoryInsertionDto));
         return new SuccessResult(Messages.CATEGORY_ADD_SUCCESS);
@@ -55,5 +56,9 @@ public class CategoryManager implements CategoryService {
             return  new SuccessDataResult<>(Mapper.categoryEntityToViewWithProductDto(categoryOptional.get()),Messages.CATEGORY_FOUND);
         }
         return new ErrorDataResult(null,Messages.CATEGORY_NOT_FOUND);
+    }
+    @Override
+    public boolean existById(long categoryId) {
+        return _categoryRepository.existsById(categoryId);
     }
 }

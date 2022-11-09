@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product,Long> {
-    @Query("select p from Product as p where p.category.categoryId >= :categoryId")
+    @Query("select p from Product as p where p.category.categoryId = :categoryId")
     List<Product> findProductsByCategory(@Param("categoryId") long categoryId);
 }

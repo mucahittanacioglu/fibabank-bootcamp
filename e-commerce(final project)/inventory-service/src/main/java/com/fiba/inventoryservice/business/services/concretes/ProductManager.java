@@ -45,12 +45,9 @@ public class ProductManager implements ProductService {
     public Result addProduct(ProductInsertionDto productInsertionDto){
         Optional<Category> categoryOptional= _categoryManager.findCategoryById(productInsertionDto.getCategoryId());
         if(categoryOptional.isPresent()){
-            Category category = categoryOptional.get();
             Product product = Mapper.productInsertionDtoToEntity(productInsertionDto);
-            product.setCategory(category);
-
-            category.getProductList().add(product);
-            _categoryManager.addCategoryAsEntity(category);
+            product.setCategory(categoryOptional.get());
+            _productRepository.save(product);
             return new SuccessResult(Messages.PRODUCT_ADD_SUCCESS);
         }
         return new ErrorResult(Messages.CATEGORY_NOT_FOUND);
@@ -61,12 +58,15 @@ public class ProductManager implements ProductService {
         Optional<Product> productOptional = _productRepository.findById(productId);
         if (productOptional.isPresent()){
             Product product = productOptional.get();
-            Optional<Category> categoryOptional = _categoryManager.findCategoryById(product.getCategory().getCategoryId());
-            if (categoryOptional.isPresent()){
-                Category category = categoryOptional.get();
+            boolean categoryExist = _categoryManager.existById(product.getCategory().getCategoryId());
+            if (categoryExist){
+                /*Category category = categoryOptional.get();
                 product.setCategory(null);
                 category.getProductList().remove(product);
-                _categoryManager.addCategoryAsEntity(category);
+                _categoryManager.addCategoryAsEntity(category);*/
+                product.getCategory().getProductList().remove(product);
+                product.setCategory(null);
+                _productRepository.deleteById(productId);
                 return new SuccessResult(Messages.PRODUCT_DELETE_SUCCESS);
             }
             return new ErrorResult(Messages.CATEGORY_NOT_FOUND);

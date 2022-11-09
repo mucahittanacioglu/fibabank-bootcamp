@@ -31,7 +31,7 @@ export class ProductComponent implements OnInit {
     cartProduct.salesPrice = product.salesPrice;
     cartProduct.productId = product.productId;
     if(cartId == null){
-      alert("Create cart first!")  
+      this.toatrService.errorToaster("Create cart first!")  
       return
       }
       cartProduct.cartId = Number(localStorage.getItem("cartId"))

@@ -37,7 +37,8 @@ public class CategoryController {
     public Result deleteCategoryById(@PathVariable("categoryId") long categoryId){
         return _categoryManager.removeCategory(categoryId);
     }
-    @GetMapping("/categories/insert")
+
+    /*@GetMapping("/categories/insert")
     public String insertCategories(){
         Category ct = new Category("Shirts");
         ct.setProductList(new ArrayList<>());
@@ -50,7 +51,10 @@ public class CategoryController {
         p2.setCategory(ct);
         ct.getProductList().add(p2);
 
+
         _categoryManager.addCategoryAsEntity(ct);
         return "Success!";
     }
+    */
+
 }
