@@ -31,7 +31,10 @@ public class CartManager implements CartService {
         return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
     }
     public Result createNewCart(String customerName){
-
+        Optional<Cart> existCartOptional = _cartRepository.findCartByName(customerName);
+        if(existCartOptional.isPresent()){
+            return new SuccessDataResult<>(existCartOptional.get().getCartId(), Messages.CART_ALREADY_EXIST);
+        }
         Cart cart= _cartRepository.save(new Cart(customerName));
 
         return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
