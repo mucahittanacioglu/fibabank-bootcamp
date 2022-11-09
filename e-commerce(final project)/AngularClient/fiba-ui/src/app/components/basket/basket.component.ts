@@ -38,12 +38,13 @@ export class BasketComponent implements OnInit {
     this.totalSum = this.basket.cartProducts.reduce((total,currentProduct)=>total+currentProduct.lineAmount,0)
   }
   incrementByOne(basketItem:CartProduct){
-    basketItem.salesQuantity+=1;
+    
     this.shoppingService.addProducttoCart(basketItem).subscribe(result=>{
       if(result.success){
+        basketItem.salesQuantity+=1;
         this.toatrService.successToaster(result.message)
       }else{
-        this.toatrService.warningToaster(result.message)
+        this.toatrService.errorToaster(result.message)
       }
        
     });
@@ -53,23 +54,23 @@ export class BasketComponent implements OnInit {
   
   decrementByOne(basketItem:CartProduct){
     if(basketItem.salesQuantity==1){
-      this.basket.cartProducts = this.basket.cartProducts.filter(product=>product.productId != basketItem.productId)
+      
       this.shoppingService.removeProductFromCart(this.basket.cartId,basketItem.cartProductId).subscribe(result=>{
         if(result.success) {
+          this.basket.cartProducts = this.basket.cartProducts.filter(product=>product.productId != basketItem.productId)
           this.toatrService.successToaster(result.message)
           this.updateTotalSum();
         }else{
-          this.toatrService.warningToaster(result.message)
-        }
-          
-        
+          this.toatrService.errorToaster(result.message)
+        }        
       });
       return
     }else{
-      basketItem.salesQuantity -=1;
+      
       this.shoppingService.removeProductFromCart(this.basket.cartId,basketItem.cartProductId).subscribe(result=>{
         if(result.success){
           this.toatrService.warningToaster(result.message)
+          basketItem.salesQuantity -=1;
           this.updateLineAmount(basketItem);
           this.updateTotalSum();
         } else{
