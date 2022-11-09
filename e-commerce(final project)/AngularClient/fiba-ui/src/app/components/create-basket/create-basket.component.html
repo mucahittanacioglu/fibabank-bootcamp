@@ -1,7 +1,14 @@
 
-<div class="form-group">
-  <label for="exampleInputEmail1">Customer Name for Basket</label>
-  <input type="text" class="form-control" [defaultValue]="customerName">
+<div class="position-absolute top-50 start-50 translate-middle">
+
+    <div class="form-group">
+      <label >Customer Name for Basket</label>
+      <input type="text" class="form-control my-button" [(ngModel)]="customerName">
+    </div>
+    <div class="form-group">
+      <button  class="btn btn-primary my-button" (click)="createBasket()">Create Basket</button>
+    </div>
+
 </div>
 
-<button  class="btn btn-primary" (click)="createBasket()">Submit</button>
+

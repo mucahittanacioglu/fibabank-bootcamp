@@ -75,7 +75,7 @@ public class Gateway {
     }
 
     private CartProductViewDto toCartProductViewDto(CartProductInsertDto cartProductInsertDto,long cartId){
-        String productName = _inventoryComponent.getProductWithId(cartProductInsertDto.getCartProductId()).getData().getProductName();
+        String productName = _inventoryComponent.getProductWithId(cartProductInsertDto.getProductId()).getData().getProductName();
         return new CartProductViewDto(cartProductInsertDto.getCartProductId(), cartId, cartProductInsertDto.getProductId(),
                 cartProductInsertDto.getSalesQuantity(),cartProductInsertDto.getSalesPrice(),cartProductInsertDto.getLineAmount(),productName);
     }

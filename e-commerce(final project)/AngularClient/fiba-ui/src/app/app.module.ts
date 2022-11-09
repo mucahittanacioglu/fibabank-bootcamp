@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CategoryComponent } from './components/category/category.component';
 import { CategoryViewComponent } from './components/category-view/category-view.component';
 import { CreateBasketComponent } from './components/create-basket/create-basket.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 const appRoutes: Routes = [
   {path:'create-basket',component:CreateBasketComponent},
   {path:'',component:CreateBasketComponent},
@@ -32,6 +32,8 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true})
   ],
   providers: [],

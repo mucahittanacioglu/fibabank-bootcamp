@@ -35,6 +35,7 @@ body{
 
         .img-thumbnail {
             border: none;
+            margin-top:10px;
         }
 
         .card {

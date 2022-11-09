@@ -20,7 +20,7 @@ export class ShoppingService {
     return this.httpClient.get<Result>(this.apiUrl+"cart/checkout/"+cartId);
   }
   removeProductFromCart(cartId:number,productId:number):Observable<Result>{
-    return this.httpClient.delete<Result>(this.apiUrl+"shopping/cart/"+cartId+"/remove/"+productId);
+    return this.httpClient.delete<Result>(this.apiUrl+"cart/"+cartId+"/remove/"+productId);
   }
   addProducttoCart(product:CartProduct):Observable<Result>{
     return this.httpClient.post<Result>(this.apiUrl+"cart/add/",product);
