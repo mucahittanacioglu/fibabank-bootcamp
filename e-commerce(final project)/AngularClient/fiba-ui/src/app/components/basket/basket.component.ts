@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cart } from 'src/app/models/Cart';
 import { CartProduct } from 'src/app/models/CartProduct';
 import { ShoppingService } from 'src/app/services/shopping.service';
+import { ToasterService } from 'src/app/services/toaster.service';
 
 @Component({
   selector: 'app-basket',
@@ -15,7 +16,7 @@ export class BasketComponent implements OnInit {
   cartProducts:[]
   } 
   totalSum:number=0;
-  constructor(private shoppingService:ShoppingService) { }
+  constructor(private shoppingService:ShoppingService,private toatrService:ToasterService) { }
 
   ngOnInit(): void {
     this.shoppingService.getCartById(Number(localStorage.getItem("cartId"))).subscribe(result=>{
@@ -26,7 +27,11 @@ export class BasketComponent implements OnInit {
   }
   checkout(){
     this.shoppingService.cartCheckout(this.basket.cartId).subscribe(result => {
-      console.log(result)
+      if(result.success){
+        this.toatrService.successToaster(result.message)
+      }else{
+        this.toatrService.warningToaster(result.message)
+      }
     });
   }
   updateTotalSum(){
@@ -35,7 +40,12 @@ export class BasketComponent implements OnInit {
   incrementByOne(basketItem:CartProduct){
     basketItem.salesQuantity+=1;
     this.shoppingService.addProducttoCart(basketItem).subscribe(result=>{
-      result.success ? "":console.log(result.message)
+      if(result.success){
+        this.toatrService.successToaster(result.message)
+      }else{
+        this.toatrService.warningToaster(result.message)
+      }
+       
     });
     this.updateLineAmount(basketItem);
     this.updateTotalSum();
@@ -46,22 +56,29 @@ export class BasketComponent implements OnInit {
       this.basket.cartProducts = this.basket.cartProducts.filter(product=>product.productId != basketItem.productId)
       this.shoppingService.removeProductFromCart(this.basket.cartId,basketItem.cartProductId).subscribe(result=>{
         if(result.success) {
+          this.toatrService.successToaster(result.message)
           this.updateTotalSum();
+        }else{
+          this.toatrService.warningToaster(result.message)
         }
-        console.log(result.message)
+          
+        
       });
-      return;
+      return
+    }else{
+      basketItem.salesQuantity -=1;
+      this.shoppingService.removeProductFromCart(this.basket.cartId,basketItem.cartProductId).subscribe(result=>{
+        if(result.success){
+          this.toatrService.warningToaster(result.message)
+          this.updateLineAmount(basketItem);
+          this.updateTotalSum();
+        } else{
+          this.toatrService.errorToaster(result.message)
+        }
+        
+        
+      });
     }
-    basketItem.salesQuantity -=1;
-    this.shoppingService.removeProductFromCart(this.basket.cartId,basketItem.cartProductId).subscribe(result=>{
-      if(result.success){
-        this.updateLineAmount(basketItem);
-        this.updateTotalSum();
-      } 
-      console.log(result.message)
-      
-    });
-    
   }
   updateLineAmount(basketItem:CartProduct){
     basketItem.lineAmount = basketItem.salesPrice*basketItem.salesQuantity;

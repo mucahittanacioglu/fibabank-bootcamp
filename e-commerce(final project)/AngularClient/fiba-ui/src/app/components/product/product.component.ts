@@ -3,6 +3,7 @@ import { CartProduct } from 'src/app/models/CartProduct';
 import { Product } from 'src/app/models/Product';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ShoppingService } from 'src/app/services/shopping.service';
+import { ToasterService } from 'src/app/services/toaster.service';
 
 @Component({
   selector: 'app-product',
@@ -17,7 +18,7 @@ export class ProductComponent implements OnInit {
     categoryName:"Test2"
   };
 
-  constructor(private inventoryService:InventoryService,private shoppingService:ShoppingService) { }
+  constructor(private inventoryService:InventoryService,private shoppingService:ShoppingService,private toatrService:ToasterService) { }
 
   ngOnInit(): void {
 
@@ -35,7 +36,11 @@ export class ProductComponent implements OnInit {
       }
       cartProduct.cartId = Number(localStorage.getItem("cartId"))
         this.shoppingService.addProducttoCart(cartProduct).subscribe(result  =>{
-          console.log(result)
+          if(result.success){
+            this.toatrService.successToaster(result.message)
+          }else{
+            this.toatrService.errorToaster(result.message)
+          }
         })
     }
   }

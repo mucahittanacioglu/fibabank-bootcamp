@@ -12,6 +12,8 @@ import { CategoryComponent } from './components/category/category.component';
 import { CategoryViewComponent } from './components/category-view/category-view.component';
 import { CreateBasketComponent } from './components/create-basket/create-basket.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const appRoutes: Routes = [
   {path:'create-basket',component:CreateBasketComponent},
   {path:'',component:CreateBasketComponent},
@@ -30,10 +32,12 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot(),
     RouterModule.forRoot(appRoutes, {enableTracing: true})
   ],
   providers: [],
