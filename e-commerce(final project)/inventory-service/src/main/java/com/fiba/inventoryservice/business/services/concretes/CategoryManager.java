@@ -6,6 +6,7 @@ import com.fiba.inventoryservice.business.dto.CategoryViewDto;
 import com.fiba.inventoryservice.business.dto.CategoryViewWithProductDto;
 import com.fiba.inventoryservice.business.services.abstracts.CategoryService;
 import com.fiba.inventoryservice.data.entities.Category;
+import com.fiba.inventoryservice.data.entities.Product;
 import com.fiba.inventoryservice.data.repositories.CategoryRepository;
 import com.fiba.inventoryservice.utilities.Messages.Messages;
 import com.fiba.inventoryservice.utilities.results.*;
@@ -21,6 +22,10 @@ public class CategoryManager implements CategoryService {
 
     @Autowired
     private CategoryRepository _categoryRepository;
+
+    public CategoryManager(CategoryRepository _categoryRepository) {
+        this._categoryRepository = _categoryRepository;
+    }
 
     /**
      Get all categories with their products.
@@ -39,13 +44,14 @@ public class CategoryManager implements CategoryService {
 
     /**
      Add new category to database.
-     @return SuccessResult with appropriate message.
+     @return SuccessDataResult with appropriate message.
      @param categoryInsertionDto category to add.
      */
     public Result addCategory(CategoryInsertionDto categoryInsertionDto){
         //map incoming dto to category entity
-        _categoryRepository.save(Mapper.categoryInsertionDtoToEntity(categoryInsertionDto));
-        return new SuccessResult(Messages.CATEGORY_ADD_SUCCESS);
+        Category categoryToSave = Mapper.categoryInsertionDtoToEntity(categoryInsertionDto);
+        Category category =  _categoryRepository.save(categoryToSave);
+        return new SuccessDataResult<Long>(category.getCategoryId(),Messages.CATEGORY_ADD_SUCCESS);
     }
 
     /**

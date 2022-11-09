@@ -23,6 +23,10 @@ public class CartManager implements CartService {
     @Autowired
     CartRepository _cartRepository;
 
+    public CartManager(CartRepository cartRepository) {
+        this._cartRepository = cartRepository;
+    }
+
     /**
      Create new cart in db with default name and return its id.
      @return SuccessDataResult with appropriate message.
@@ -169,6 +173,5 @@ public class CartManager implements CartService {
         }
         return new ErrorResult(Messages.CART_NOT_FOUND);
     }
-
 
 }

@@ -24,6 +24,11 @@ public class ProductManager implements ProductService {
     @Autowired
     private CategoryManager _categoryManager;
 
+    public ProductManager(ProductRepository _productRepository, CategoryManager _categoryManager) {
+        this._productRepository = _productRepository;
+        this._categoryManager = _categoryManager;
+    }
+
     /**
      Get product for given id;
      @param productId category id to view.
@@ -69,8 +74,8 @@ public class ProductManager implements ProductService {
             Product product = Mapper.productInsertionDtoToEntity(productInsertionDto);
             product.setCategory(categoryOptional.get());
 
-            _productRepository.save(product);
-            return new SuccessResult(Messages.PRODUCT_ADD_SUCCESS);
+            Product productSaved = _productRepository.save(product);
+            return new SuccessDataResult(productSaved.getProductId(),Messages.PRODUCT_ADD_SUCCESS);
         }
         return new ErrorResult(Messages.CATEGORY_NOT_FOUND);
 

@@ -62,7 +62,7 @@ Some example output
 |![](readme-resource/images/curl4-suc.png) |![](readme-resource/images/curl4-fail.png)
 
 ## 1-e) Angular UI
-The client was created with Angular and it connects to Gateway service only. Some of the entity dtos are also defined on the client side. Pages are mostly used from https://freefrontend.com and all functional.
+The client was created with Angular and it connects to Gateway service only. Some of the entity dtos are also defined on the client side. Pages are mostly used from https://freefrontend.com and are all functional.
 
 |Create basket | Catalog | Category view| Basket view
 | -------------| ------------- | ------------- | ------------- 
