@@ -11,6 +11,6 @@ public abstract class Messages {
     public static final String CART_ALREADY_CHECKED="Cart already checked out!";
     public static final String CART_PRODUCT_NOT_EXIST="Product not exist in cart!";
     public static final String CART_PRODUCT_DELETION_SUCCESS="Product deleted from cart!";
-    public static final String CART_CHECKED_OUT = "Cart checked out can not add new item!";
+    public static final String CART_CHECKED_OUT = "Cart checked out can not add/remove new item!";
     public static final String CART_ALREADY_EXIST = "Cart already exist with same username!";
 }

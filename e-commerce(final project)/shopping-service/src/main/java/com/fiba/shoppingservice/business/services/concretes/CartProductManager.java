@@ -10,8 +10,14 @@ public class CartProductManager implements CartProductService {
     @Autowired
     private CartProductRepository _cartProductRepository;
 
-    public void removeProductById(long id){
-        _cartProductRepository.deleteById(id);
+
+    /**
+     Delete product in the cart with given id.
+     @return SuccessDataResult,ErrorResult with appropriate message.
+     @param cartProductId
+     */
+    public void removeProductById(long cartProductId){
+        _cartProductRepository.deleteById(cartProductId);
     }
 
 }

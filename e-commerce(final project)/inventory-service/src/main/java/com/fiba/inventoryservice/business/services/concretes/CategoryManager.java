@@ -22,7 +22,12 @@ public class CategoryManager implements CategoryService {
     @Autowired
     private CategoryRepository _categoryRepository;
 
+    /**
+     Get all categories with their products.
+     @return SuccessDataResult with appropriate message.
+     */
     public DataResult<List<CategoryViewDto>> getAllCategories(){
+        //Find all categories and amp each one to view dto.
         List<CategoryViewDto> categoriesDto = new ArrayList<>();
         _categoryRepository.findAll()
                 .forEach(category ->
@@ -31,32 +36,56 @@ public class CategoryManager implements CategoryService {
 
         return new SuccessDataResult<>(categoriesDto);
     }
-    public void addCategoryAsEntity(Category category){
-        _categoryRepository.save(category);
-    }
 
+    /**
+     Add new category to database.
+     @return SuccessResult with appropriate message.
+     @param categoryInsertionDto category to add.
+     */
     public Result addCategory(CategoryInsertionDto categoryInsertionDto){
+        //map incoming dto to category entity
         _categoryRepository.save(Mapper.categoryInsertionDtoToEntity(categoryInsertionDto));
         return new SuccessResult(Messages.CATEGORY_ADD_SUCCESS);
     }
+
+    /**
+     Delete category from database with given id.
+     @return SuccessResult with appropriate message.
+     @param categoryId category to delete.
+     */
     public Result removeCategory(long categoryId){
         _categoryRepository.deleteById(categoryId);
         return new SuccessResult(Messages.CATEGORY_DELETE_SUCCESS);
     }
 
-    public Optional<Category> findCategoryById(long categoryID){
-        return _categoryRepository.findById(categoryID);
+    /**
+     Find category from database with given id.
+     @return Optional<Category>
+     @param categoryId category to find.
+     */
+    public Optional<Category> findCategoryById(long categoryId){
+        return _categoryRepository.findById(categoryId);
     }
 
-
+    /**
+     Find category from database with products belongs to it.
+     @return SuccessDataResult,ErrorDataResult with appropriate message.
+     @param categoryId category to find.
+     */
     @Override
     public DataResult<?> getCategoryWithData(long categoryId) {
         Optional<Category> categoryOptional = findCategoryById(categoryId);
+        //if category exist map category entity to view dto.
         if (categoryOptional.isPresent()){
             return  new SuccessDataResult<>(Mapper.categoryEntityToViewWithProductDto(categoryOptional.get()),Messages.CATEGORY_FOUND);
         }
         return new ErrorDataResult(null,Messages.CATEGORY_NOT_FOUND);
     }
+    /**
+     Check whether category with given id exist in database.
+     @return boolean
+     @param categoryId category to check.
+     */
     @Override
     public boolean existById(long categoryId) {
         return _categoryRepository.existsById(categoryId);

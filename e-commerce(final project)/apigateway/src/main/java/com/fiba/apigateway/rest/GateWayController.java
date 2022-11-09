@@ -7,9 +7,6 @@ import com.fiba.apigateway.utilities.results.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
-
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/commerce")
@@ -29,7 +26,6 @@ public class GateWayController {
     }
     @GetMapping("/inventory/categories")
     public Result getAllCategories(){
-
         return _gateway.getAlCategories();
     }
     @PostMapping("/inventory/category/add")
@@ -57,10 +53,9 @@ public class GateWayController {
     public String createCart(){
         return _gateway.createCart();
     }
+
     @GetMapping("/shopping/cart/create/{customerName}")
-    public String createCart(@PathVariable("customerName") String customerName){
-        return _gateway.createCart(customerName);
-    }
+    public String createCart(@PathVariable("customerName") String customerName){ return _gateway.createCart(customerName); }
 
     @PostMapping("/shopping/cart/add")
     public Result addProductToCart(@RequestBody CartProductInsertDto cartProductInsertDto){
@@ -78,10 +73,7 @@ public class GateWayController {
     }
 
     @GetMapping("/shopping/cart/find/{cartId}")
-    public Result find(@PathVariable("cartId")long cartId){
-
-        return _gateway.findCartById(cartId);
-    }
+    public Result find(@PathVariable("cartId")long cartId){ return _gateway.findCartById(cartId);}
 
 
 }

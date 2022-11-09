@@ -38,23 +38,4 @@ public class CategoryController {
         return _categoryManager.removeCategory(categoryId);
     }
 
-    /*@GetMapping("/categories/insert")
-    public String insertCategories(){
-        Category ct = new Category("Shirts");
-        ct.setProductList(new ArrayList<>());
-
-        Product p1 = new Product("White Shirt",34);
-        p1.setCategory(ct);
-        ct.getProductList().add(p1);
-
-        Product p2 = new Product("Brown Shirt",25);
-        p2.setCategory(ct);
-        ct.getProductList().add(p2);
-
-
-        _categoryManager.addCategoryAsEntity(ct);
-        return "Success!";
-    }
-    */
-
 }

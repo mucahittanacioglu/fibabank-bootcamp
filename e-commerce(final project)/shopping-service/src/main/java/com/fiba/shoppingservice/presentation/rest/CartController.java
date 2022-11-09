@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
     @Autowired
     private CartManager _cartManager;
-    @Autowired
-    CartProductManager _cartProductManager;
 
     @GetMapping("/cart/create")
     public Result createCart(){
@@ -31,11 +29,7 @@ public class CartController {
     }
     @DeleteMapping("/cart/{cartId}/remove/{productId}")
     public Result deleteItemFromCart(@PathVariable("cartId")long cartId,@PathVariable("productId")long productId){
-        Result result = _cartManager.removeItemFromCart(cartId,productId);
-        /*if (result.isSuccess()){
-            _cartProductManager.removeProductById(productId);
-        }*/
-        return result;
+        return _cartManager.removeItemFromCart(cartId,productId);
     }
     @GetMapping("/cart/checkout/{cartId}")
     public Result checkout(@PathVariable("cartId")long cartId){
