@@ -5,6 +5,7 @@ In this project, I implemented a basic e-commerce project with microservice arch
 ## 1-)Project Overview
 
 There are 3 microservices including API-Gateway. These are Inventory Service, Shopping Service and Gate Way. Each service has traditional 3-layered architecture. Inventory and Shopping service has unit tests. There is also a web client with Angular. 
+![](readme-resource/images/project-overview.png)
 
 ### 1-a) Inventory Service
 
