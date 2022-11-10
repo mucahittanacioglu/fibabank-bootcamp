@@ -19,31 +19,38 @@ public class GateWayController {
 
         return _gateway.getProductById(productId);
     }
+
     @GetMapping("/inventory/products/{categoryId}")
     public String getProductsByCategoryId(@PathVariable("categoryId") long categoryId){
 
         return _gateway.getProductByCategory(categoryId);
     }
+
     @GetMapping("/inventory/categories")
     public Result getAllCategories(){
         return _gateway.getAlCategories();
     }
+
     @PostMapping("/inventory/category/add")
     public Result createCategory(@RequestBody CategoryInsertionDto categoryInsertionDto){
         return _gateway.addCategory(categoryInsertionDto);
     }
+
     @DeleteMapping("/inventory/category/delete/{categoryId}")
     public Result deleteCategoryById(@PathVariable("categoryId") long categoryId){
         return _gateway.removeCategory(categoryId);
     }
+
     @PostMapping("/inventory/product/add")
     public Result addProduct(@RequestBody ProductInsertionDto productInsertionDto){
         return _gateway.addProduct(productInsertionDto);
     }
+
     @GetMapping("/inventory/category/{categoryId}")
     public String getCategoryWithData(@PathVariable("categoryId")long categoryId){
         return _gateway.getCategoryWithData(categoryId);
     }
+
     @DeleteMapping("/inventory/product/delete/{productId}")
     public Result deleteProductWithId(@PathVariable("productId") long productId){
         return _gateway.deleteProductWithId(productId);

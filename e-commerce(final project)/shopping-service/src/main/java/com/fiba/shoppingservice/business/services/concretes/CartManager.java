@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -49,7 +50,9 @@ public class CartManager implements CartService {
         if(existCartOptional.isPresent()){
             return new SuccessDataResult<>(existCartOptional.get().getCartId(), Messages.CART_ALREADY_EXIST);
         }
-        Cart cart= _cartRepository.save(new Cart(customerName));
+        Cart cartToAdd = new Cart(customerName);
+        cartToAdd.setCartProducts(new ArrayList<CartProduct>());
+        Cart cart= _cartRepository.save(cartToAdd);
 
         return new SuccessDataResult<>(cart.getCartId(), Messages.CART_CREATION_SUCCESS);
     }
@@ -70,7 +73,6 @@ public class CartManager implements CartService {
             // if cart checked out return error
             if (cart.getStatus()==1) return new ErrorResult(Messages.CART_CHECKED_OUT);
 
-            //If product exist increment quantity
             Optional<CartProduct> tempProductOptional= cart.getCartProducts().stream().filter(cartProductS->
                     cartProductS.getProductId()==cartProduct.getProductId()).findFirst();
 
@@ -101,7 +103,7 @@ public class CartManager implements CartService {
      @return SuccessDataResult,ErrorResult with appropriate message.
      @param cartId,productId
      */
-    public Result removeItemFromCart(long cartId,long productId){
+    public Result removeItemFromCart(long cartId,long cartProductId){
         Optional<Cart> cartOptional = _cartRepository.findById(cartId);
 
         if (cartOptional.isPresent()){
@@ -111,7 +113,7 @@ public class CartManager implements CartService {
           if(cart.getStatus() == 1) return new ErrorResult(Messages.CART_CHECKED_OUT);
 
           Optional<CartProduct> productOptional = cart.getCartProducts().stream()
-                  .filter(product -> product.getCartProductId() == productId).findFirst();
+                  .filter(product -> product.getCartProductId() == cartProductId).findFirst();
 
           if (productOptional.isPresent()){
               CartProduct cartProduct = productOptional.get();

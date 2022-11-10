@@ -32,7 +32,7 @@ class CategoryManagerTest {
     @Test
     void whenCategoryCreateCalledWithValidArguments_itShouldReturnSuccessResultWithCategoryId(){
         Result result = _categoryManager.addCategory(getCategory());
-        assertEquals(result.isSuccess(),true);
+        assertEquals(true,result.isSuccess());
         assertInstanceOf(DataResult.class,result);
         assertInstanceOf(Long.class,((DataResult<Long>)result).getData());
     }

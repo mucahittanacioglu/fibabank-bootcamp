@@ -21,6 +21,7 @@ public class Gateway {
     public DataResult<List<CategoryDto>> getAlCategories(){
         return _inventoryComponent.getAllCategories();
     }
+
     public DataResult<ProductDto> getProductById(long productId){
         return _inventoryComponent.getProductWithId(productId);
     }
@@ -30,6 +31,7 @@ public class Gateway {
     public String createCart(){
         return _shoppingComponent.createCart();
     }
+
     public String createCart(String customerName){
         return _shoppingComponent.createCart(customerName);
     }
@@ -45,6 +47,7 @@ public class Gateway {
         return _shoppingComponent.checkout(cartId);
     }
 
+    //aggregation
     public Result findCartById(long cartId){
         Result result = _shoppingComponent.findCartById(cartId);
         //get product name from inventory service

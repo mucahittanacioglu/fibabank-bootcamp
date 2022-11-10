@@ -40,35 +40,35 @@ class ProductManagerTest {
     void whenProductAddCalledWithNonExistCategory_itShouldReturnErrorResult() {
         ProductInsertionDto notValidProduct = getNonValidProduct();
         Result result = _productManager.addProduct(notValidProduct);
-        assertEquals(result.isSuccess(),false);
-        assertEquals(result.getMessage(),Messages.CATEGORY_NOT_FOUND);
+        assertEquals(false,result.isSuccess());
+        assertEquals(Messages.CATEGORY_NOT_FOUND,result.getMessage());
     }
 
     @Test
     void whenDeleteProductCalledWithNonExistingProductId_itShouldReturnErrorResult() {
         Result result = _productManager.deleteProductWithId(-1);
-        assertEquals(result.isSuccess(),false);
-        assertEquals(result.getMessage(),Messages.PRODUCT_NOT_FOUND);
+        assertEquals(false,result.isSuccess());
+        assertEquals(Messages.PRODUCT_NOT_FOUND,result.getMessage());
     }
 
     @Test
     void whenGetProductWithIdCalledWithNonExistingProductId_itShouldReturnErrorResult() {
         Result result = _productManager.getProductWithId(-1);
-        assertEquals(result.isSuccess(),false);
-        assertEquals(result.getMessage(),Messages.PRODUCT_NOT_FOUND);
+        assertEquals(false,result.isSuccess());
+        assertEquals(Messages.PRODUCT_NOT_FOUND,result.getMessage());
     }
 
     @Test
     void whenAddProductCalledWithValidProduct_itShouldReturnSuccessResultWithProductId(){
         DataResult<Long> category = (DataResult<Long>)_categoryManager.addCategory(getCategory());
-        assertEquals(category.isSuccess(),true);
+        assertEquals(true,category.isSuccess());
 
         ProductInsertionDto productInsertionDto = getValidProduct(category.getData());
 
         Result result = _productManager.addProduct(productInsertionDto);
 
-        assertEquals(result.isSuccess(),true);
-        assertEquals(result.getMessage(),Messages.PRODUCT_ADD_SUCCESS);
+        assertEquals(true,result.isSuccess());
+        assertEquals(Messages.PRODUCT_ADD_SUCCESS,result.getMessage());
         assertInstanceOf(Long.class,((DataResult<Long>)result).getData());
     }
     void whenAddProductCalledWithValidProductId_itShouldAlsoAddToCategoryList(){
@@ -81,7 +81,7 @@ class ProductManagerTest {
         Result result = _categoryManager.getCategoryWithData(category.getData());
         CategoryViewWithProductDto categoryViewWithProductDto = ((DataResult<CategoryViewWithProductDto>)result).getData();
 
-        assertEquals(categoryViewWithProductDto.getProducts().size(),1);
+        assertEquals(1,categoryViewWithProductDto.getProducts().size());
 
         assertEquals(categoryViewWithProductDto.getProducts().get(0).getProductId(),(( DataResult<Long>)productResult).getData());
     }
@@ -97,7 +97,7 @@ class ProductManagerTest {
         Result resultCategory = _categoryManager.getCategoryWithData(category.getData());
         CategoryViewWithProductDto categoryViewWithProductDto = ((DataResult<CategoryViewWithProductDto>)resultCategory).getData();
 
-        assertEquals(categoryViewWithProductDto.getProducts().size(),0);
+        assertEquals(0,categoryViewWithProductDto.getProducts().size());
     }
 
     private CategoryInsertionDto getCategory(){
