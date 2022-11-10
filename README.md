@@ -4,7 +4,7 @@ In this project, I implemented a basic e-commerce project with microservice arch
 
 ## 1-)Project Overview
 
-There are 3 microservices including API-Gateway. These are Inventory Service, Shopping Service and Gate Way. Each service has tradetional 3-layered architecture. I also created a client with Angular. 
+There are 3 microservices including API-Gateway. These are Inventory Service, Shopping Service and Gate Way. Each service has traditional 3-layered architecture. Inventory and Shopping service has unit tests. There is also a web client with Angular. 
 
 ### 1-a) Inventory Service
 
@@ -23,6 +23,9 @@ The Inventory service has **_"/inventory"_** prefix for the following routes.
 | _POST_        | **/category/add** |Category object in request body.|Returns category addition status.|
 | _DELETE_        | **/category/delete/{categoryId}** |Only path variable.|Returns deletion status.|
 
+![](readme-resource/images/inventory-junit.png)
+
+
 ### 1-b) Shopping Service
 
 The Shopping service has 2 entities Cart and Cart Product. The Cart has OneToMany relation with Product relation.
@@ -36,6 +39,8 @@ The Shopping service has **_"/shopping"_** prefix for the following routes.
 | _GET_        | **/cart/find/{cartId}** |Only path variable. |Returns cart with given _cartId_ if exist.|
 | _POST_        | **/cart/add** |Cart product object in request body.|Returns status of product addition to cart.|
 | _DELETE_        | **/cart/{cartId}/remove/{productId}** |Only path variables.|Returns status of product deletion of cart.|
+
+![](readme-resource/images/shopping-junit.png)
 
 ## 1-c) API-Gateway
 
@@ -62,8 +67,16 @@ Some example output
 |![](readme-resource/images/curl4-suc.png) |![](readme-resource/images/curl4-fail.png)
 
 ## 1-e) Angular UI
-The client was created with Angular and it connects to Gateway service only. Some of the entity dtos are also defined on the client side. Pages are mostly used from https://freefrontend.com and are all functional.
+The client was created with Angular and it connects to Gateway service only. Some of the entity dtos are also defined on the client side. Pages are mostly used from https://freefrontend.com and are fully functional.
 
-|Create basket | Catalog | Category view| Basket view
-| -------------| ------------- | ------------- | ------------- 
-|![](readme-resource/images/ui-1.png)|![](readme-resource/images/ui-2.png)|![](readme-resource/images/ui-3.png)|![](readme-resource/images/ui-4.png)
+| Catalog Page
+| ------------- 
+|![](readme-resource/images/ui-2.png)
+
+|Category View Page 
+| ------------- 
+|![](readme-resource/images/ui-3.png)
+
+|Basket Page
+| ------------- 
+|![](readme-resource/images/ui-4.png)
